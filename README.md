@@ -31,6 +31,20 @@ Open http://localhost:5173 → **3. Documents** → schema `ITR-1 AY 2024-25 (V1
 For production, `npm run build && npm start` serves the built app and the API together on port 4000
 (`PORT` and `DATA_DIR` environment variables override the defaults).
 
+## Deploy to Railway
+
+The repository deploys to [Railway](https://railway.com) as one service: `railway.json` builds all
+packages and starts the server, which serves both the app and the API on Railway's `PORT`.
+
+1. In Railway: **New Project → Deploy from GitHub repo** → choose this repository.
+2. Add a **Volume** to the service, mounted at `/data`, and set the variable `DATA_DIR=/data`.
+   Without a volume, schemas, rule sets and documents are lost on every redeploy.
+3. Under **Settings → Networking**, click **Generate Domain** to get a public URL.
+4. Load the ITR-1 starter data from your own machine: `node rulesets/itr1-ay2024-25/install.mjs https://<your-domain>`.
+
+> The app has no login. Anyone with the URL can view, change or delete data, so don't load real
+> taxpayer returns into a public deployment.
+
 ## How it works
 
 | Tab | What you do |
