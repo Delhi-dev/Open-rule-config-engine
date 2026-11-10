@@ -6,11 +6,11 @@ A schema-driven engine for checking and completing structured documents. You upl
 **rule set** (validation rules plus computed fields, kept as plain JSON), and open documents against it:
 every edit recomputes the derived fields and re-runs the rules instantly, side by side with the original.
 
-It ships with the official **ITR-1 (AY 2024-25) JSON schema** and a starter rule set of 73 validation
-rules and 52 computed fields, translated from the CBDT's published validation rules and the form's tax
-arithmetic, with tests that pin exact rupee figures.
+It ships with the official JSON schemas and validation rule sets for the Indian income-tax return forms
+**ITR-1 to ITR-7, AY 2024-25**, translated from the CBDT's published validation rules. ITR-1 also comes
+with its tax arithmetic as computed fields, and a smaller starter set with tests that pin exact rupee figures.
 
-> **Not tax advice.** The rule set is an independent translation of the CBDT validation-rules
+> **Not tax advice.** The rule sets are an independent translation of the CBDT validation-rules
 > documents, not official files. A "valid" result here does not guarantee the department's utility
 > will accept a return. Check anything important against the official documents.
 
@@ -49,12 +49,30 @@ Storage is one JSON file per record under `packages/server/data/` (or `DATA_DIR`
 | `packages/core` | The engine: paths, expression language, rules, computations, schema inference, document helpers (TypeScript, no UI). |
 | `packages/server` | Express REST API (`/api/schemas`, `/api/rulesets`, `/api/validate`, `/api/documents`). |
 | `packages/client` | React + Vite user interface. |
-| `rulesets/itr1-ay2024-25` | Official ITR-1 V1.4 schema, the 73-rule / 52-computation **starter** set, a sample return and `install.mjs`. |
+| `rulesets/itr1-ay2024-25` | Official ITR-1 schema, the full rule set, the **starter** set, a sample return and `install.mjs`. |
+| `rulesets/itr2…itr7-ay2024-25` | Official schema and full validation rule set for each form. |
 | `rulesets/test` | The ITR-1 oracle test. |
 | `docs/build-plan.md` | The design document the code was built from. |
 
-Other forms and years are data, not code: upload the form's JSON schema on **1. Schemas**, then write or
-**Import…** a `.ruleset.json` for it on **2. Rule sets**.
+### Included rule sets (AY 2024-25)
+
+| Form | Schema | Rule set | Rules | Computed fields |
+| --- | --- | --- | --- | --- |
+| ITR-1 (starter) | V1.4 | `itr1-ay2024-25/starter.ruleset.json` | 73 | 52 |
+| ITR-1 (full) | V1.4 | `itr1-ay2024-25/itr1-ay2024-25.ruleset.json` | 301 | 116 |
+| ITR-2 | V1.5 | `itr2-ay2024-25/itr2-ay2024-25.ruleset.json` | 884 | — |
+| ITR-3 | V1.4 | `itr3-ay2024-25/itr3-ay2024-25.ruleset.json` | 1,415 | — |
+| ITR-4 | V1.4 | `itr4-ay2024-25/itr4-ay2024-25.ruleset.json` | 373 | — |
+| ITR-5 | V1.3 | `itr5-ay2024-25/itr5-ay2024-25.ruleset.json` | 1,285 | — |
+| ITR-6 | V1.3 | `itr6-ay2024-25/itr6-ay2024-25.ruleset.json` | 1,316 | — |
+| ITR-7 | V1.4 | `itr7-ay2024-25/itr7-ay2024-25.ruleset.json` | 832 | — |
+
+Only the ITR-1 starter set is covered by the exact-figure tests; the others are checked to import cleanly.
+For ITR-2 to ITR-7 the totals and tax are validated, not computed.
+
+To load a form: upload its schema on **1. Schemas** (use the rule set's `schemaName` as the name), then
+**Import…** its `.ruleset.json` on **2. Rule sets**. Other forms and years are data, not code: write or
+import a `.ruleset.json` for any JSON schema.
 
 ## Tests
 
@@ -78,5 +96,5 @@ This project is open source under the **Apache License 2.0**. You are free to us
 redistribute it, including in government and internal settings, without asking for permission.
 See the [LICENSE](LICENSE) file for the full terms.
 
-The ITR-1 JSON schema in `rulesets/itr1-ay2024-25/` is published by the Income Tax Department,
-Government of India, and is included unchanged for convenience.
+The ITR JSON schemas under `rulesets/` are published by the Income Tax Department, Government of
+India, and are included unchanged for convenience.
