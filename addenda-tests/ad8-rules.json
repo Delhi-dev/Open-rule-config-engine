@@ -1,0 +1,2165 @@
+{
+ "note": "AD-8: rules whose definitions are sound (validateRuleDefinition → []) or broken (→ at least one problem), as judged by the reference. Fixed data: never edit.",
+ "cases": [
+  {
+   "rule": {
+    "id": "A47",
+    "name": "Gross salary (B1(i)) = 17(1) + 17(2) + 17(3) + 89A notified country + 89A other country",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.GrossSalary",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.Salary + ITR.ITR1.ITR1_IncomeDeductions.PerquisitesValue + ITR.ITR1.ITR1_IncomeDeductions.ProfitsInSalary + ITR.ITR1.ITR1_IncomeDeductions.IncomeNotified89A + ITR.ITR1.ITR1_IncomeDeductions.IncomeNotifiedOther89A"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 47",
+    "group": "Part B – Salary and other sources (dropdowns)"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A62",
+    "name": "Allowances exempt u/s 10 (B1ii) = sum of the individual exempt allowances",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.AllwncExemptUs10.TotalAllwncExemptUs10",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.ITR1_IncomeDeductions.AllwncExemptUs10.AllwncExemptUs10Dtls[*].SalOthAmount)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 62",
+    "group": "Part B – Salary"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A48",
+    "name": "Net salary (B1iii) = gross salary (B1i) − allowances exempt u/s 10 (B1ii) − relief u/s 89A (B1iia)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.NetSalary",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.GrossSalary - ITR.ITR1.ITR1_IncomeDeductions.AllwncExemptUs10.TotalAllwncExemptUs10 - ITR.ITR1.ITR1_IncomeDeductions.Increliefus89A"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 48",
+    "notes": "Income claimed for relief u/s 89A (B1iia) is also subtracted, as per the form (iii = i − ii − iia).",
+    "group": "Part B – Salary"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A63",
+    "name": "Standard deduction u/s 16(ia) ≤ lower of Rs 50,000 and net salary",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductionUs16ia",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(50000, ITR.ITR1.ITR1_IncomeDeductions.NetSalary)"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 63",
+    "notes": "\"Total salary\" read as net salary (B1iii), the amount from which the deduction is made.",
+    "group": "Part B – Salary"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A49",
+    "name": "Deductions u/s 16 (B1 iv) = standard deduction + entertainment allowance + professional tax",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductionUs16",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.DeductionUs16ia + ITR.ITR1.ITR1_IncomeDeductions.EntertainmentAlw16ii + ITR.ITR1.ITR1_IncomeDeductions.ProfessionalTaxUs16iii"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 49",
+    "group": "Part B/C – totals"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A50",
+    "name": "Income chargeable under Salaries (B1v) = net salary (B1iii) − deductions u/s 16 (B1iv)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.IncomeFromSal",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.NetSalary - ITR.ITR1.ITR1_IncomeDeductions.DeductionUs16"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 50",
+    "group": "Part B – Salary"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A34",
+    "name": "Annual value (B2iii) = gross rent (B2i) − tax paid to local authorities (B2ii)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.AnnualValue",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.GrossRentReceived - ITR.ITR1.ITR1_IncomeDeductions.TaxPaidlocalAuth"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 34",
+    "group": "Part B – House Property"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A31",
+    "name": "Standard deduction (B2iv) = 30% of annual value (B2iii)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.StandardDeduction",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "round(0.3 * max(0, ITR.ITR1.ITR1_IncomeDeductions.AnnualValue))"
+     },
+     "blankAsZero": true,
+     "tolerance": 1
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 31",
+    "notes": "A negative annual value gives no 30% deduction.",
+    "group": "Part B – House Property"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A35",
+    "name": "Income under House Property (B2vii) = B2iii − B2iv − B2v + B2vi",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.TotalIncomeOfHP",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.AnnualValue - ITR.ITR1.ITR1_IncomeDeductions.StandardDeduction - ITR.ITR1.ITR1_IncomeDeductions.InterestPayable + ITR.ITR1.ITR1_IncomeDeductions.ArrearsUnrealizedRentRcvd"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 35",
+    "group": "Part B – House Property"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A40",
+    "name": "Income from other sources (B3) = sum of the individual other-source incomes",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.IncomeOthSrc",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcOthAmount)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 40",
+    "group": "Part B – Other Sources"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A41",
+    "name": "Deduction u/s 57(iia) only when family pension is offered under other sources",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductionUs57iia",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 0
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 41",
+    "condition": {
+     "expression": "(sumif(ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcOthAmount, ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc == \"FAP\") <= 0)"
+    },
+    "notes": "Family pension = other-sources rows with nature FAP.",
+    "group": "Part B/C – totals"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A42",
+    "name": "Deduction u/s 57(iia) ≤ lower of 1/3rd of family pension and Rs 15,000",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductionUs57iia",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(floor(sumif(ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcOthAmount, ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc == \"FAP\") / 3) + 1, 15000)"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 42",
+    "notes": "+1 rounding allowance on the one-third.",
+    "group": "Part B/C – totals"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A7",
+    "name": "Old regime: gross total income = salary + house property + other sources",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.IncomeFromSal + ITR.ITR1.ITR1_IncomeDeductions.TotalIncomeOfHP + (ITR.ITR1.ITR1_IncomeDeductions.IncomeOthSrc - ITR.ITR1.ITR1_IncomeDeductions.DeductionUs57iia - ITR.ITR1.ITR1_IncomeDeductions.Increliefus89AOS)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 7",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"Y\")"
+    },
+    "notes": "Other sources taken net of deduction u/s 57(iia) and relief u/s 89A (the two \"Less\" lines under B3), because B3 itself is the gross dropdown total (Sl. 40).",
+    "group": "Part B – Gross Total Income"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A8",
+    "name": "Default (new) regime with house property loss: gross total income = salary + other sources (loss ignored)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.IncomeFromSal + (ITR.ITR1.ITR1_IncomeDeductions.IncomeOthSrc - ITR.ITR1.ITR1_IncomeDeductions.DeductionUs57iia - ITR.ITR1.ITR1_IncomeDeductions.Increliefus89AOS)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 8",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"N\") and (ITR.ITR1.ITR1_IncomeDeductions.TotalIncomeOfHP < 0)"
+    },
+    "notes": "Loss under house property cannot be set off against other heads u/s 115BAC. Other sources net of 57(iia) and 89A relief (see Sl. 7).",
+    "group": "Part B – Gross Total Income"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A83",
+    "name": "Default (new) regime with positive house property income: gross total income = salary + house property + other sources",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.IncomeFromSal + ITR.ITR1.ITR1_IncomeDeductions.TotalIncomeOfHP + (ITR.ITR1.ITR1_IncomeDeductions.IncomeOthSrc - ITR.ITR1.ITR1_IncomeDeductions.DeductionUs57iia - ITR.ITR1.ITR1_IncomeDeductions.Increliefus89AOS)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 83",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"N\") and (ITR.ITR1.ITR1_IncomeDeductions.TotalIncomeOfHP >= 0)"
+    },
+    "notes": "Other sources net of 57(iia) and 89A relief (see Sl. 7).",
+    "group": "Part B – Gross Total Income"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A18",
+    "name": "Exempt income total = sum of the individual exempt incomes",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.ExemptIncAgriOthUs10.ExemptIncAgriOthUs10Total",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.ITR1_IncomeDeductions.ExemptIncAgriOthUs10.ExemptIncAgriOthUs10Dtls[*].OthAmount)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 18",
+    "group": "Exempt Income"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A90",
+    "name": "80D: preventive health check-up (all four fields together) ≤ Rs 5,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth",
+    "check": {
+     "kind": "assert",
+     "expression": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpSlfFam + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpSlfFamSrCtzn + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpParents + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpParentsSrCtzn <= 5000"
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 90",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A141",
+    "name": "80D 1a = health insurance premium (i) + preventive check-up (ii), capped at Rs 25,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.SelfAndFamily",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.HealthInsPremSlfFam + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpSlfFam, 25000)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 141",
+    "notes": "The cap is folded into the equality so an above-cap break-up with a capped 1a passes.",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A142",
+    "name": "80D 1b (self & family, senior citizen) ≤ Rs 50,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.SelfAndFamilySeniorCitizen",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 50000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 142",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A143",
+    "name": "80D 1b = premium (i) + check-up (ii) + medical expenditure (iii), capped at Rs 50,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.SelfAndFamilySeniorCitizen",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.HlthInsPremSlfFamSrCtzn + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpSlfFamSrCtzn + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.MedicalExpSlfFamSrCtzn, 50000)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 143",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A144",
+    "name": "80D 2a (parents) ≤ Rs 25,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.Parents",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 25000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 144",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A145",
+    "name": "80D 2a = premium (i) + preventive check-up (ii), capped at Rs 25,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.Parents",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.HlthInsPremParents + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpParents, 25000)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 145",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A146",
+    "name": "80D 2b (parents, senior citizen) ≤ Rs 50,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.ParentsSeniorCitizen",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 50000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 146",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A147",
+    "name": "80D 2b = premium (i) + check-up (ii) + medical expenditure (iii), capped at Rs 50,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.ParentsSeniorCitizen",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.HlthInsPremParentsSrCtzn + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.PrevHlthChckUpParentsSrCtzn + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.MedicalExpParentsSrCtzn, 50000)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 147",
+    "notes": "The document checks the equality only below Rs 50,000; folding the cap into min() is equivalent.",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A148",
+    "name": "80D 3 eligible amount ≤ Rs 1,00,000",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.EligibleAmountOfDedn",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 100000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 148",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A149",
+    "name": "80D 3 eligible amount = 1a + 1b + 2a + 2b, capped at Rs 1,00,000 and at gross total income",
+    "target": "ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.EligibleAmountOfDedn",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.SelfAndFamily + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.SelfAndFamilySeniorCitizen + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.Parents + ITR.ITR1.Schedule80D.Sec80DSelfFamSrCtznHealth.ParentsSeniorCitizen, 100000, if(exists(ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), max(0, ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), 99999999999999))"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 149",
+    "group": "Schedule 80D"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A179",
+    "name": "Deduction u/s 80GGC in Part C = eligible amount of contribution in Schedule 80GGC",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80GGC",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.Schedule80GGC.TotalEligibleDonationAmt80GGC"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 179",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"Y\")"
+    },
+    "notes": "Old regime only (s.115BAC(2)); see rule Aderived80GGC-sch.",
+    "group": "Schedule 80GGC"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A180",
+    "name": "80GGC: eligible amount per row = lower of contribution in other mode and gross total income",
+    "target": "ITR.ITR1.Schedule80GGC.Schedule80GGCDetails[*].EligibleDonationAmt",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.Schedule80GGC.Schedule80GGCDetails[*].DonationAmtOtherMode, if(exists(ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), max(0, ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), 99999999999999))"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 180",
+    "group": "Schedule 80GGC"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A181",
+    "name": "80GGC: total contribution = contribution in cash + contribution in other mode",
+    "target": "ITR.ITR1.Schedule80GGC.Schedule80GGCDetails[*].DonationAmt",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.Schedule80GGC.Schedule80GGCDetails[*].DonationAmtCash + ITR.ITR1.Schedule80GGC.Schedule80GGCDetails[*].DonationAmtOtherMode"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 181",
+    "group": "Schedule 80GGC"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A182",
+    "name": "80GGC: total eligible amount = sum of the rows’ eligible amounts, restricted to gross total income",
+    "target": "ITR.ITR1.Schedule80GGC.TotalEligibleDonationAmt80GGC",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(sum(ITR.ITR1.Schedule80GGC.Schedule80GGCDetails[*].EligibleDonationAmt), if(exists(ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), max(0, ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), 99999999999999))"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 182",
+    "group": "Schedule 80GGC"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "AderivedVIA-usr-total",
+    "name": "Total of deductions claimed (user block) = sum of the individual claimed amounts",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.TotalChapVIADeductions",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80C + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80CCC + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80CCDEmployeeOrSE + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80CCD1B + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80CCDEmployer + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80D + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80DD + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80DDB + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80E + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80EE + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80EEA + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80EEB + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80G + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80GG + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80GGA + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80GGC + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80TTA + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80TTB + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.Section80U + ITR.ITR1.ITR1_IncomeDeductions.UsrDeductUndChapVIA.AnyOthSec80CCH"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "notes": "UsrDeductUndChapVIA holds the amounts as typed; its total is a plain sum (the GTI restriction applies to DeductUndChapVIA, Sl. 112).",
+    "group": "Part B/C – totals"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A91",
+    "name": "Deductions u/s 80C + 80CCC + 80CCD(1) ≤ Rs 1,50,000",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA",
+    "check": {
+     "kind": "assert",
+     "expression": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80C + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80CCC + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80CCDEmployeeOrSE <= 150000"
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 91",
+    "group": "Part C – Chapter VI-A caps"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A104",
+    "name": "Deduction u/s 80TTA ≤ Rs 10,000",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTA",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 10000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 104",
+    "group": "Part C – Chapter VI-A caps"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A105",
+    "name": "Deduction u/s 80TTA ≤ interest from savings account under other sources",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTA",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "sumif(ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcOthAmount, ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc == \"SAV\")"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 105",
+    "notes": "Savings interest = other-sources rows with nature SAV.",
+    "group": "Part C – Chapter VI-A caps"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A106",
+    "name": "Senior citizen cannot claim deduction u/s 80TTA (80TTB applies instead)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTA",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 0
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 106",
+    "condition": {
+     "expression": "(ITR.ITR1.PersonalInfo.DOB <= \"1964-04-01\")"
+    },
+    "notes": "Senior = 60 or more during FY 2023-24, i.e. DOB on or before 1964-04-01 (the document's \"on or after 02.04.1964\" is the non-senior side).",
+    "group": "Part C – Chapter VI-A caps"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A107",
+    "name": "Deduction u/s 80TTB ≤ Rs 50,000",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTB",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 50000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 107",
+    "group": "Part C – Chapter VI-A caps"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A108",
+    "name": "Deduction u/s 80TTB only for senior citizens (DOB on or before 1964-04-01)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTB",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 0
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 108",
+    "condition": {
+     "expression": "(ITR.ITR1.PersonalInfo.DOB > \"1964-04-01\")"
+    },
+    "group": "Part C – Chapter VI-A caps"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A112",
+    "name": "Total Chapter VI-A deductions (B5) = sum of the individual deductions, restricted to gross total income",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.TotalChapVIADeductions",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80C + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80CCC + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80CCDEmployeeOrSE + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80CCD1B + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80CCDEmployer + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80D + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80DD + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80DDB + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80E + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80EE + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80EEA + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80EEB + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80G + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80GG + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80GGA + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80GGC + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTA + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80TTB + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.Section80U + ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.AnyOthSec80CCH, if(exists(ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), max(0, ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome), 99999999999999))"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 112",
+    "group": "Part B/C – totals"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A12",
+    "name": "Total income = Gross total income − total Chapter VI-A deductions (not below zero)",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.TotalIncome",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "max(0, ITR.ITR1.ITR1_IncomeDeductions.GrossTotIncome - ITR.ITR1.ITR1_IncomeDeductions.DeductUndChapVIA.TotalChapVIADeductions)"
+     },
+     "blankAsZero": true,
+     "tolerance": 5
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 12",
+    "notes": "Tolerance ±5: total income is rounded to the nearest Rs 10 (s.288A).",
+    "group": "Part B/C – totals"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A64",
+    "name": "Total income cannot exceed Rs 50 lakh in ITR-1",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.TotalIncome",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 5000000
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 64",
+    "group": "Part B – Gross Total Income"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A9",
+    "name": "Old regime: rebate u/s 87A not available when total income exceeds Rs 5,00,000",
+    "target": "ITR.ITR1.ITR1_TaxComputation.Rebate87A",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 0
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 9",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"Y\") and (ITR.ITR1.ITR1_IncomeDeductions.TotalIncome > 500000)"
+    },
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A10",
+    "name": "Old regime: rebate u/s 87A cannot exceed Rs 12,500 (nor the tax payable)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.Rebate87A",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(12500, ITR.ITR1.ITR1_TaxComputation.TotalTaxPayable)"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 10",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"Y\")"
+    },
+    "notes": "The rebate is also capped at the tax payable on total income (D1) since it cannot create a negative tax.",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A11",
+    "name": "New regime: rebate u/s 87A above Rs 7,00,000 limited to marginal relief (tax − excess income over 7 lakh)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.Rebate87A",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "max(0, ITR.ITR1.ITR1_TaxComputation.TotalTaxPayable - (ITR.ITR1.ITR1_IncomeDeductions.TotalIncome - 700000))"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 11",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"N\") and (ITR.ITR1.ITR1_IncomeDeductions.TotalIncome > 700000)"
+    },
+    "notes": "Marginal rebate (proviso to s.87A): when total income exceeds 7 lakh the rebate cannot exceed tax payable minus the excess of income over 7 lakh; beyond ~7.28 lakh this forces the rebate to zero.",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A11cap",
+    "name": "New regime: rebate u/s 87A cannot exceed Rs 25,000 (nor the tax payable)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.Rebate87A",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "min(25000, ITR.ITR1.ITR1_TaxComputation.TotalTaxPayable)"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 11",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.OptOutNewTaxRegime == \"N\")"
+    },
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A13",
+    "name": "Tax after rebate (D3) = tax payable on total income (D1) − rebate u/s 87A (D2)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.TaxPayableOnRebate",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_TaxComputation.TotalTaxPayable - ITR.ITR1.ITR1_TaxComputation.Rebate87A"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 13",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "Aderivedcess",
+    "name": "Health & education cess (D4) = 4% of tax after rebate (D3)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.EducationCess",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "round(0.04 * ITR.ITR1.ITR1_TaxComputation.TaxPayableOnRebate)"
+     },
+     "blankAsZero": true,
+     "tolerance": 1
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "notes": "Derived from the form: ITR-1 has no surcharge, so cess is 4% of D3 (±1 for rounding).",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A14",
+    "name": "Total tax and cess (D5) = tax after rebate (D3) + health & education cess (D4)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.GrossTaxLiability",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_TaxComputation.TaxPayableOnRebate + ITR.ITR1.ITR1_TaxComputation.EducationCess"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 14",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "AderivedD7",
+    "name": "Balance tax after relief (D7) = total tax and cess (D5) − relief u/s 89 (D6)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.NetTaxLiability",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_TaxComputation.GrossTaxLiability - ITR.ITR1.ITR1_TaxComputation.Section89"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "notes": "Derived from the form arithmetic; together with Sl. 15 and Sl. 66 this keeps D5–D9 consistent.",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A16",
+    "name": "Total interest and fee payable (D8) = 234A + 234B + 234C + 234F",
+    "target": "ITR.ITR1.ITR1_TaxComputation.TotalIntrstPay",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_TaxComputation.IntrstPay.IntrstPayUs234A + ITR.ITR1.ITR1_TaxComputation.IntrstPay.IntrstPayUs234B + ITR.ITR1.ITR1_TaxComputation.IntrstPay.IntrstPayUs234C + ITR.ITR1.ITR1_TaxComputation.IntrstPay.LateFilingFee234F"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 16",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A15",
+    "name": "Total tax, fee and interest (D9) = D5 + 234A + 234B + 234C + 234F − relief u/s 89 (D6)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.TotTaxPlusIntrstPay",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_TaxComputation.GrossTaxLiability + ITR.ITR1.ITR1_TaxComputation.IntrstPay.IntrstPayUs234A + ITR.ITR1.ITR1_TaxComputation.IntrstPay.IntrstPayUs234B + ITR.ITR1.ITR1_TaxComputation.IntrstPay.IntrstPayUs234C + ITR.ITR1.ITR1_TaxComputation.IntrstPay.LateFilingFee234F - ITR.ITR1.ITR1_TaxComputation.Section89"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 15",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A66",
+    "name": "Total tax, fee and interest (D9) = balance tax after relief (D7) + total interest and fee (D8)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.TotTaxPlusIntrstPay",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ITR1_TaxComputation.NetTaxLiability + ITR.ITR1.ITR1_TaxComputation.TotalIntrstPay"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 66",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "Aderived234F-ontime",
+    "name": "No late filing fee u/s 234F when the return is filed within the due date (139(1))",
+    "target": "ITR.ITR1.ITR1_TaxComputation.IntrstPay.LateFilingFee234F",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "literal",
+      "value": 0
+     }
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "condition": {
+     "expression": "(ITR.ITR1.FilingStatus.ReturnFileSec == 11)"
+    },
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "Aderived234F-cap",
+    "name": "Late filing fee u/s 234F cannot exceed Rs 5,000 (Rs 1,000 when total income ≤ Rs 5 lakh)",
+    "target": "ITR.ITR1.ITR1_TaxComputation.IntrstPay.LateFilingFee234F",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "if(ITR.ITR1.ITR1_IncomeDeductions.TotalIncome <= 500000, 1000, 5000)"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "group": "Part D – Tax computation"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A187",
+    "name": "Schedule IT: total tax paid = sum of col 4 of all challans",
+    "target": "ITR.ITR1.TaxPayments.TotalTaxPayments",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.TaxPayments.TaxPayment[*].Amt)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 187",
+    "group": "Schedules IT / TDS / TCS – Taxes paid details"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A195",
+    "name": "Schedule TDS1: total tax deducted = sum of the rows",
+    "target": "ITR.ITR1.TDSonSalaries.TotalTDSonSalaries",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.TDSonSalaries.TDSonSalary[*].TotalTDSSal)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 195",
+    "group": "Schedules IT / TDS / TCS – Taxes paid details"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A196",
+    "name": "Schedule TDS2: total TDS credit claimed this year (col 6) = sum of the rows",
+    "target": "ITR.ITR1.TDSonOthThanSals.TotalTDSonOthThanSals",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.TDSonOthThanSals.TDSonOthThanSal[*].ClaimOutOfTotTDSOnAmtPaid)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 196",
+    "group": "Schedules IT / TDS / TCS – Taxes paid details"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A197",
+    "name": "Schedule TDS3: total TDS credit claimed this year (col 6) = sum of the rows",
+    "target": "ITR.ITR1.ScheduleTDS3Dtls.TotalTDS3Details",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.ScheduleTDS3Dtls.TDS3Details[*].TDSClaimed)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 197",
+    "group": "Schedules IT / TDS / TCS – Taxes paid details"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A191",
+    "name": "Schedule TCS: total TCS credit claimed this year (col 6) = sum of the rows",
+    "target": "ITR.ITR1.ScheduleTCS.TotalSchTCS",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(ITR.ITR1.ScheduleTCS.TCS[*].AmtTCSClaimedThisYear)"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 191",
+    "group": "Schedules IT / TDS / TCS – Taxes paid details"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A205",
+    "name": "Advance tax (D10a) = Schedule IT payments dated 01-04-2023 to 31-03-2024",
+    "target": "ITR.ITR1.TaxPaid.TaxesPaid.AdvanceTax",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sumif(ITR.ITR1.TaxPayments.TaxPayment[*].Amt, ITR.ITR1.TaxPayments.TaxPayment[*].DateDep >= \"2023-04-01\" and ITR.ITR1.TaxPayments.TaxPayment[*].DateDep <= \"2024-03-31\")"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 205",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A206",
+    "name": "Self-assessment tax (D10d) = Schedule IT payments dated after 31-03-2024",
+    "target": "ITR.ITR1.TaxPaid.TaxesPaid.SelfAssessmentTax",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sumif(ITR.ITR1.TaxPayments.TaxPayment[*].Amt, ITR.ITR1.TaxPayments.TaxPayment[*].DateDep > \"2024-03-31\")"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 206",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A203",
+    "name": "TDS claimed (D10b) = total TDS claimed in Schedules TDS1 + TDS2 + TDS3",
+    "target": "ITR.ITR1.TaxPaid.TaxesPaid.TDS",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.TDSonSalaries.TotalTDSonSalaries + ITR.ITR1.TDSonOthThanSals.TotalTDSonOthThanSals + ITR.ITR1.ScheduleTDS3Dtls.TotalTDS3Details"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 203",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A204",
+    "name": "TCS claimed (D10c) = total TCS claimed in Schedule TCS",
+    "target": "ITR.ITR1.TaxPaid.TaxesPaid.TCS",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.ScheduleTCS.TotalSchTCS"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 204",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A199",
+    "name": "Total taxes paid (D10) = advance tax + TDS + TCS + self-assessment tax",
+    "target": "ITR.ITR1.TaxPaid.TaxesPaid.TotalTaxesPaid",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.TaxPaid.TaxesPaid.AdvanceTax + ITR.ITR1.TaxPaid.TaxesPaid.TDS + ITR.ITR1.TaxPaid.TaxesPaid.TCS + ITR.ITR1.TaxPaid.TaxesPaid.SelfAssessmentTax"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 199",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A198",
+    "name": "Total taxes paid (D10) = Schedule IT + TDS1 + TDS2 + TDS3 + TCS totals",
+    "target": "ITR.ITR1.TaxPaid.TaxesPaid.TotalTaxesPaid",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.TaxPayments.TotalTaxPayments + ITR.ITR1.TDSonSalaries.TotalTDSonSalaries + ITR.ITR1.TDSonOthThanSals.TotalTDSonOthThanSals + ITR.ITR1.ScheduleTDS3Dtls.TotalTDS3Details + ITR.ITR1.ScheduleTCS.TotalSchTCS"
+     },
+     "blankAsZero": true
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 198",
+    "notes": "The scenario text lists IT, TDS1, TDS2 and TCS; Schedule TDS3 (Form 26QC) is also part of the TDS claimed in ITR-1 and is included so that the totals reconcile.",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A200",
+    "name": "Refund (D12) = total taxes paid (D10) − total tax, fee and interest (D9), when positive",
+    "target": "ITR.ITR1.Refund.RefundDue",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "max(0, ITR.ITR1.TaxPaid.TaxesPaid.TotalTaxesPaid - ITR.ITR1.ITR1_TaxComputation.TotTaxPlusIntrstPay)"
+     },
+     "blankAsZero": true,
+     "tolerance": 5
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 200",
+    "notes": "Refund is 0 (not negative) when taxes paid fall short of the liability. Tolerance ±5: the refund is rounded to the nearest Rs 10 (s.288B).",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A201",
+    "name": "Amount payable (D11) = total tax, fee and interest (D9) − total taxes paid (D10), when positive",
+    "target": "ITR.ITR1.TaxPaid.BalTaxPayable",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "max(0, ITR.ITR1.ITR1_TaxComputation.TotTaxPlusIntrstPay - ITR.ITR1.TaxPaid.TaxesPaid.TotalTaxesPaid)"
+     },
+     "blankAsZero": true,
+     "tolerance": 5
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 201",
+    "notes": "Amount payable is 0 (not negative) when taxes paid exceed the liability. Tolerance ±5: the amount is rounded to the nearest Rs 10 (s.288B).",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "AderivedIT-date",
+    "name": "Schedule IT: a challan for AY 2024-25 cannot be dated before 01-04-2023",
+    "target": "ITR.ITR1.TaxPayments.TaxPayment[*].DateDep",
+    "check": {
+     "kind": "assert",
+     "expression": "ITR.ITR1.TaxPayments.TaxPayment[*].DateDep >= \"2023-04-01\""
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "notes": "Implied by Sl. 205/206: a payment dated before the previous year is neither advance tax nor self-assessment tax, so Sl. 198 (D10 = Schedule IT + TDS + TCS) could not hold.",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A208",
+    "name": "PAN must be an individual PAN (4th character P) – ITR-1 is for individuals only",
+    "target": "ITR.ITR1.PersonalInfo.PAN",
+    "check": {
+     "kind": "pattern",
+     "regex": "^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$"
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 208",
+    "notes": "The \"role CD\" of the PAN is its 4th character (P = individual). Full role check against the PAN master is external.",
+    "group": "Part A – General"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A202",
+    "name": "IFSC must be in the RBI format (4 letters, 0, 6 alphanumerics)",
+    "target": "ITR.ITR1.Refund.BankAccountDtls.AddtnlBankDetails[*].IFSCCode",
+    "check": {
+     "kind": "pattern",
+     "regex": "^[A-Z]{4}0[A-Z0-9]{6}$"
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 202",
+    "notes": "Partial: matching against the RBI IFSC master needs external data; only the format is checked offline.",
+    "group": "Part D – Taxes paid and refund"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A38",
+    "name": "Other sources: \"Interest from savings bank account\" cannot be selected more than once",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc",
+    "check": {
+     "kind": "unique"
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 38",
+    "condition": {
+     "expression": "(ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc == \"SAV\")"
+    },
+    "notes": "Dropdown code SAV; the condition restricts the uniqueness check to that code so \"OTH\" rows may repeat.",
+    "group": "Part B – Salary and other sources (dropdowns)"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A39",
+    "name": "Other sources: \"Interest from deposits (bank / post office / co-operative society)\" cannot be selected more than once",
+    "target": "ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc",
+    "check": {
+     "kind": "unique"
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 39",
+    "condition": {
+     "expression": "(ITR.ITR1.ITR1_IncomeDeductions.OthersInc.OthersIncDtlsOthSrc[*].OthSrcNatureDesc == \"IFD\")"
+    },
+    "notes": "Dropdown code IFD; the condition restricts the uniqueness check to that code so \"OTH\" rows may repeat.",
+    "group": "Part B – Salary and other sources (dropdowns)"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "A192",
+    "name": "Schedule TDS2: TDS claimed this year (col 6) cannot exceed tax deducted (col 5)",
+    "target": "ITR.ITR1.TDSonOthThanSals.TDSonOthThanSal[*].ClaimOutOfTotTDSOnAmtPaid",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.TDSonOthThanSals.TDSonOthThanSal[*].TotTDSOnAmtPaid"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "CBDT ITR-1 AY2024-25 Sl. 192",
+    "group": "Schedules IT / TDS / TCS – Taxes paid details"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "Aderivedverpan",
+    "name": "PAN in verification must equal the assessee PAN when verifying as Self",
+    "target": "ITR.ITR1.Verification.Declaration.AssesseeVerPAN",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "ITR.ITR1.PersonalInfo.PAN"
+     },
+     "blankAsZero": false
+    },
+    "severity": "error",
+    "enabled": true,
+    "ref": "Derived from form arithmetic / schema",
+    "condition": {
+     "expression": "(ITR.ITR1.Verification.Capacity == \"S\")"
+    },
+    "group": "Schedule 80GGA / Verification"
+   },
+   "sound": true,
+   "source": "starter"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "   ",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "pattern",
+     "regex": "("
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "pattern",
+     "regex": "[a-z"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum("
+     }
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "nosuch(1)"
+     }
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": ""
+     }
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "expression",
+      "expression": "sumif(1, 2)"
+     }
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "assert",
+     "expression": ""
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "assert",
+     "expression": "a +"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "assert",
+     "expression": "exists(1)"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "enum",
+     "values": []
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "min",
+     "value": "x"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "maxLength"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    },
+    "condition": {
+     "expression": "(("
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    },
+    "condition": {
+     "all": [
+      {
+       "path": "a.c",
+       "operator": "exists"
+      },
+      {
+       "expression": "nosuch()"
+      }
+     ]
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    },
+    "condition": {
+     "not": {
+      "any": [
+       {
+        "expression": "1 +"
+       }
+      ]
+     }
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    },
+    "condition": {
+     "path": "",
+     "operator": "exists"
+    }
+   },
+   "sound": false,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "pattern",
+     "regex": "^[A-Z]{5}[0-9]{4}[A-Z]$"
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "<=",
+     "rhs": {
+      "type": "expression",
+      "expression": "sum(a.rows[*].x) + 1"
+     },
+     "tolerance": 5
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "literal",
+      "value": 7
+     }
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": ">=",
+     "rhs": {
+      "type": "path",
+      "path": "a.c"
+     }
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "compare",
+     "operator": "==",
+     "rhs": {
+      "type": "aggregate",
+      "fn": "sum",
+      "path": "a.rows[*].x"
+     }
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "assert",
+     "expression": "a.b > 0 or isblank(a.c)"
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "enum",
+     "values": [
+      "Y",
+      "N"
+     ]
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "min",
+     "value": 0
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "unique",
+     "scope": "parent"
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "type",
+     "type": "date"
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    },
+    "condition": {
+     "all": [
+      {
+       "path": "a.c",
+       "operator": "in",
+       "rhs": {
+        "type": "literal",
+        "value": "Y,N"
+       }
+      },
+      {
+       "expression": "a.d > 1"
+      }
+     ]
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  },
+  {
+   "rule": {
+    "id": "X",
+    "name": "X rule",
+    "target": "a.b",
+    "severity": "error",
+    "check": {
+     "kind": "required"
+    },
+    "condition": {
+     "not": {
+      "path": "a.e",
+      "operator": "==",
+      "rhs": {
+       "type": "literal",
+       "value": "X"
+      }
+     }
+    }
+   },
+   "sound": true,
+   "source": "synthetic"
+  }
+ ]
+}

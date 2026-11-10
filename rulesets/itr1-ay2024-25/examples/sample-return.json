@@ -1,0 +1,267 @@
+{
+  "ITR": {
+    "ITR1": {
+      "CreationInfo": {
+        "SWVersionNo": "1.0",
+        "SWCreatedBy": "SW00000000",
+        "JSONCreatedBy": "SW00000000",
+        "JSONCreationDate": "2024-07-15",
+        "IntermediaryCity": "Delhi",
+        "Digest": "-"
+      },
+      "Form_ITR1": {
+        "FormName": "ITR-1",
+        "Description": "Sample ITR-1 return",
+        "AssessmentYear": "2024",
+        "SchemaVer": "Ver1.0",
+        "FormVer": "Ver1.0"
+      },
+      "PersonalInfo": {
+        "AssesseeName": {
+          "FirstName": "Asha",
+          "SurNameOrOrgName": "Rao"
+        },
+        "PAN": "ABCPR1234F",
+        "Address": {
+          "ResidenceNo": "12",
+          "LocalityOrArea": "Sector 17",
+          "CityOrTownOrDistrict": "Chandigarh",
+          "StateCode": "06",
+          "CountryCode": "91",
+          "PinCode": 160017,
+          "CountryCodeMobile": 91,
+          "MobileNo": 9876543210,
+          "EmailAddress": "asha@example.com"
+        },
+        "DOB": "1985-06-15",
+        "AadhaarCardNo": "123412341234",
+        "EmployerCategory": "OTH"
+      },
+      "FilingStatus": {
+        "ReturnFileSec": 11,
+        "OptOutNewTaxRegime": "Y",
+        "SeventhProvisio139": "N",
+        "ItrFilingDueDate": "2024-07-31"
+      },
+      "Verification": {
+        "Declaration": {
+          "AssesseeVerName": "Asha Rao",
+          "FatherName": "Mohan Rao",
+          "AssesseeVerPAN": "ABCPR1234F"
+        },
+        "Capacity": "S",
+        "Place": "Chandigarh"
+      },
+      "Schedule80D": {
+        "Sec80DSelfFamSrCtznHealth": {
+          "SeniorCitizenFlag": "N",
+          "SelfAndFamily": 25000,
+          "HealthInsPremSlfFam": 21000,
+          "PrevHlthChckUpSlfFam": 4000,
+          "SelfAndFamilySeniorCitizen": 0,
+          "HlthInsPremSlfFamSrCtzn": 0,
+          "PrevHlthChckUpSlfFamSrCtzn": 0,
+          "MedicalExpSlfFamSrCtzn": 0,
+          "ParentsSeniorCitizenFlag": "P",
+          "Parents": 0,
+          "HlthInsPremParents": 0,
+          "PrevHlthChckUpParents": 0,
+          "ParentsSeniorCitizen": 0,
+          "HlthInsPremParentsSrCtzn": 0,
+          "PrevHlthChckUpParentsSrCtzn": 0,
+          "MedicalExpParentsSrCtzn": 0,
+          "EligibleAmountOfDedn": 25000
+        }
+      },
+      "Schedule80G": {
+        "TotalDonationsUs80GCash": 0,
+        "TotalDonationsUs80GOtherMode": 0,
+        "TotalDonationsUs80G": 0,
+        "TotalEligibleDonationsUs80G": 0
+      },
+      "Schedule80GGA": {
+        "TotalDonationAmtCash80GGA": 0,
+        "TotalDonationAmtOtherMode80GGA": 0,
+        "TotalDonationsUs80GGA": 0,
+        "TotalEligibleDonationAmt80GGA": 0
+      },
+      "Schedule80GGC": {
+        "TotalDonationAmtCash80GGC": 0,
+        "TotalDonationAmtOtherMode80GGC": 0,
+        "TotalDonationsUs80GGC": 0,
+        "TotalEligibleDonationAmt80GGC": 0
+      },
+      "ITR1_IncomeDeductions": {
+        "GrossSalary": 800000,
+        "Salary": 800000,
+        "PerquisitesValue": 0,
+        "ProfitsInSalary": 0,
+        "IncomeNotified89A": 0,
+        "IncomeNotifiedOther89A": 0,
+        "AllwncExemptUs10": {
+          "TotalAllwncExemptUs10": 0
+        },
+        "Increliefus89A": 0,
+        "NetSalary": 800000,
+        "DeductionUs16": 50000,
+        "DeductionUs16ia": 50000,
+        "EntertainmentAlw16ii": 0,
+        "ProfessionalTaxUs16iii": 0,
+        "IncomeFromSal": 750000,
+        "TypeOfHP": "S",
+        "GrossRentReceived": 0,
+        "TaxPaidlocalAuth": 0,
+        "AnnualValue": 0,
+        "StandardDeduction": 0,
+        "InterestPayable": 0,
+        "ArrearsUnrealizedRentRcvd": 0,
+        "TotalIncomeOfHP": 0,
+        "IncomeOthSrc": 15000,
+        "OthersInc": {
+          "OthersIncDtlsOthSrc": [
+            {
+              "OthSrcNatureDesc": "SAV",
+              "OthSrcOthAmount": 15000
+            }
+          ]
+        },
+        "DeductionUs57iia": 0,
+        "Increliefus89AOS": 0,
+        "GrossTotIncome": 765000,
+        "UsrDeductUndChapVIA": {
+          "Section80C": 150000,
+          "Section80CCC": 0,
+          "Section80CCDEmployeeOrSE": 0,
+          "Section80CCD1B": 0,
+          "Section80CCDEmployer": 0,
+          "Section80D": 25000,
+          "Section80DD": 0,
+          "Section80DDB": 0,
+          "Section80E": 0,
+          "Section80EE": 0,
+          "Section80EEA": 0,
+          "Section80EEB": 0,
+          "Section80G": 0,
+          "Section80GG": 0,
+          "Section80GGA": 0,
+          "Section80GGC": 0,
+          "Section80U": 0,
+          "Section80TTA": 10000,
+          "Section80TTB": 0,
+          "AnyOthSec80CCH": 0,
+          "TotalChapVIADeductions": 185000
+        },
+        "DeductUndChapVIA": {
+          "Section80C": 150000,
+          "Section80CCC": 0,
+          "Section80CCDEmployeeOrSE": 0,
+          "Section80CCD1B": 0,
+          "Section80CCDEmployer": 0,
+          "Section80D": 25000,
+          "Section80DD": 0,
+          "Section80DDB": 0,
+          "Section80E": 0,
+          "Section80EE": 0,
+          "Section80EEA": 0,
+          "Section80EEB": 0,
+          "Section80G": 0,
+          "Section80GG": 0,
+          "Section80GGA": 0,
+          "Section80GGC": 0,
+          "Section80U": 0,
+          "Section80TTA": 10000,
+          "Section80TTB": 0,
+          "AnyOthSec80CCH": 0,
+          "TotalChapVIADeductions": 185000
+        },
+        "TotalIncome": 580000,
+        "ExemptIncAgriOthUs10": {
+          "ExemptIncAgriOthUs10Dtls": [
+            {
+              "NatureDesc": "AGRI",
+              "OthAmount": 4000
+            }
+          ],
+          "ExemptIncAgriOthUs10Total": 4000
+        }
+      },
+      "ITR1_TaxComputation": {
+        "TotalTaxPayable": 28500,
+        "Rebate87A": 0,
+        "TaxPayableOnRebate": 28500,
+        "EducationCess": 1140,
+        "GrossTaxLiability": 29640,
+        "Section89": 0,
+        "NetTaxLiability": 29640,
+        "TotalIntrstPay": 0,
+        "IntrstPay": {
+          "IntrstPayUs234A": 0,
+          "IntrstPayUs234B": 0,
+          "IntrstPayUs234C": 0,
+          "LateFilingFee234F": 0
+        },
+        "TotTaxPlusIntrstPay": 29640
+      },
+      "TaxPaid": {
+        "TaxesPaid": {
+          "AdvanceTax": 0,
+          "TDS": 30000,
+          "TCS": 0,
+          "SelfAssessmentTax": 0,
+          "TotalTaxesPaid": 30000
+        },
+        "BalTaxPayable": 0
+      },
+      "Refund": {
+        "RefundDue": 360,
+        "BankAccountDtls": {
+          "AddtnlBankDetails": [
+            {
+              "IFSCCode": "SBIN0001234",
+              "BankName": "State Bank of India",
+              "BankAccountNo": "30123456789",
+              "AccountType": "SB"
+            }
+          ]
+        }
+      },
+      "TDSonSalaries": {
+        "TDSonSalary": [
+          {
+            "EmployerOrDeductorOrCollectDetl": {
+              "TAN": "DELA12345B",
+              "EmployerOrDeductorOrCollecterName": "Acme Technologies Pvt Ltd"
+            },
+            "IncChrgSal": 750000,
+            "TotalTDSSal": 28500
+          }
+        ],
+        "TotalTDSonSalaries": 28500
+      },
+      "TDSonOthThanSals": {
+        "TDSonOthThanSal": [
+          {
+            "EmployerOrDeductorOrCollectDetl": {
+              "TAN": "MUMS12345C",
+              "EmployerOrDeductorOrCollecterName": "State Bank of India"
+            },
+            "AmtForTaxDeduct": 15000,
+            "DeductedYr": "2023",
+            "TotTDSOnAmtPaid": 1500,
+            "ClaimOutOfTotTDSOnAmtPaid": 1500
+          }
+        ],
+        "TotalTDSonOthThanSals": 1500
+      },
+      "ScheduleTDS3Dtls": {
+        "TotalTDS3Details": 0
+      },
+      "ScheduleTCS": {
+        "TotalSchTCS": 0
+      },
+      "TaxPayments": {
+        "TotalTaxPayments": 0
+      }
+    }
+  }
+}

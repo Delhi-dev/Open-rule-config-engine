@@ -1,0 +1,58 @@
+// AD-3 check 3 of 3 — packages/core/src/expr-functions.ts.  Run: npx tsx addenda-tests/ad3-functions.check.ts
+import { checker } from './_check.js';
+import { aggregate, callScalar } from '../packages/core/src/expr-functions.js';
+
+const c = checker('expr-functions.ts');
+// aggregate(fn, values) — blanks dropped first; sum of none 0; min/max/avg of none null
+c.eq("aggregate('sum', [1, '2', null, [3]])", () => aggregate('sum', [1, '2', null, [3]]), 6);
+c.eq("aggregate('sum', [])", () => aggregate('sum', []), 0);
+c.eq("aggregate('min', [])", () => aggregate('min', []), null);
+c.eq("aggregate('max', [1, 5, '3'])", () => aggregate('max', [1, 5, '3']), 5);
+c.eq("aggregate('avg', [2, 4])", () => aggregate('avg', [2, 4]), 3);
+c.eq("aggregate('count', [1, null, '', 0])", () => aggregate('count', [1, null, '', 0]), 2);
+c.eq("aggregate('first', [null, 'x', 'y'])", () => aggregate('first', [null, 'x', 'y']), 'x');
+c.eq("aggregate('unique', ['5', 5, 6])", () => aggregate('unique', ['5', 5, 6]), 2);
+// callScalar(fn, evaluatedArgs, now?)
+const f = (fn: string, ...args: any[]) => () => callScalar(fn, args);
+c.eq('abs(-2)', f('abs', -2), 2);
+c.eq('abs(null)', f('abs', null), null);
+c.eq('round(2.346, 2)', f('round', 2.346, 2), 2.35);
+c.eq('round(2.5)', f('round', 2.5), 3);
+c.eq('floor(2.7)', f('floor', 2.7), 2);
+c.eq('ceil(2.1)', f('ceil', 2.1), 3);
+c.eq('if(true, 1, 2)', f('if', true, 1, 2), 1);
+c.eq('if(0, 1) → null', f('if', 0, 1), null);
+c.eq("nvl(null, '', 3)", f('nvl', null, '', 3), 3);
+c.eq('coalesce(null)', f('coalesce', null), null);
+c.eq("isblank(' ')", f('isblank', ' '), true);
+c.eq("len('abc')", f('len', 'abc'), 3);
+c.eq('len([1, 2])', f('len', [1, 2]), 2);
+c.eq('len(100) — string length of a number (AD-7)', f('len', 100), 3);
+c.eq('len(null) → 0 (AD-7)', f('len', null), 0);
+c.eq("lower(null) → ''", f('lower', null), '');
+c.eq("upper('ab')", f('upper', 'ab'), 'AB');
+c.eq("trim(' x ')", f('trim', ' x '), 'x');
+c.eq('str(5)', f('str', 5), '5');
+c.eq("num('7')", f('num', '7'), 7);
+c.eq("left('abcd', 2)", f('left', 'abcd', 2), 'ab');
+c.eq("right('abcd', 2)", f('right', 'abcd', 2), 'cd');
+c.eq("right('abcd', 0) → ''", f('right', 'abcd', 0), '');
+c.eq("contains('abc', 'b')", f('contains', 'abc', 'b'), true);
+c.eq("startswith('abc', 'a')", f('startswith', 'abc', 'a'), true);
+c.eq("endswith('abc', 'c')", f('endswith', 'abc', 'c'), true);
+c.eq("matches('AB12', '^[A-Z]+\\\\d+$')", f('matches', 'AB12', '^[A-Z]+\\d+$'), true);
+c.eq("matches('x', '(') → false (bad regex)", f('matches', 'x', '('), false);
+c.eq('in(2, 1, 2)', f('in', 2, 1, 2), true);
+c.eq("in('a', ['b', 'a'])", f('in', 'a', ['b', 'a']), true);
+c.eq('in(3, 1, 2)', f('in', 3, 1, 2), false);
+c.eq("date('31/03/2024')", f('date', '31/03/2024'), '2024-03-31');
+c.eq("date('nope')", f('date', 'nope'), null);
+c.eq('today() with now = 1 Jun 2024', () => callScalar('today', [], new Date(Date.UTC(2024, 5, 1))), '2024-06-01');
+c.eq("year('2024-03-31')", f('year', '2024-03-31'), 2024);
+c.eq("month('2024-03-31')", f('month', '2024-03-31'), 3);
+c.eq("day('2024-03-31')", f('day', '2024-03-31'), 31);
+c.eq("days_between('2024-01-01', '2024-03-01')", f('days_between', '2024-01-01', '2024-03-01'), 60);
+c.eq("months_between('2024-01-31', '2024-03-30')", f('months_between', '2024-01-31', '2024-03-30'), 1);
+c.eq("years_between('2000-05-05', '2024-05-04')", f('years_between', '2000-05-05', '2024-05-04'), 23);
+c.throws("callScalar('nosuch', [])", f('nosuch'), /Unknown function/);
+c.done();

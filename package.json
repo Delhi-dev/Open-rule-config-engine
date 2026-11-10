@@ -1,0 +1,25 @@
+{
+  "name": "open-rule-config-engine",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/core",
+    "packages/server",
+    "packages/client"
+  ],
+  "scripts": {
+    "build": "npm run build -w @rule-engine/core && npm run build -w @rule-engine/server && npm run build -w @rule-engine/client",
+    "test": "npm run test -w @rule-engine/core && node rulesets/test/run-all.mjs",
+    "dev": "concurrently -n server,client -c blue,green \"npm run dev -w @rule-engine/server\" \"npm run dev -w @rule-engine/client\"",
+    "start": "npm run start -w @rule-engine/server",
+    "prepare": "npm run build -w @rule-engine/core",
+    "test:e2e": "node packages/client/e2e/appendix-e.e2e.mjs",
+    "test:api": "node server-tests/t6-api.mjs && node server-tests/api-probes.mjs .",
+    "test:addenda": "for f in addenda-tests/*.check.ts; do npx tsx \"$f\" | tail -1 || exit 1; done"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "concurrently": "^9.1.2"
+  },
+  "description": "Schema-driven rule and computation engine for structured documents, with a starter rule set for Indian ITR forms (AY 2024-25)."
+}
