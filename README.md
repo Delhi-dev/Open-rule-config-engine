@@ -1,5 +1,7 @@
 # Open Rule Config Engine
 
+**Configurable validation and computation rules for structured documents**
+
 A schema-driven engine for checking and completing structured documents. You upload a schema, attach a
 **rule set** (validation rules plus computed fields, kept as plain JSON), and open documents against it:
 every edit recomputes the derived fields and re-runs the rules instantly, side by side with the original.
@@ -69,3 +71,12 @@ The code was written by a local model (JetBrains Mellum 2.1) following `docs/bui
 reviewing at each checkpoint. Some parts were supplied or patched by the reviewer where the local model
 could not meet the tests: the expression parser, the rules core, the user interface, and fixes to the
 server and schema inference.
+
+## License
+
+This project is open source under the **Apache License 2.0**. You are free to use, modify and
+redistribute it, including in government and internal settings, without asking for permission.
+See the [LICENSE](LICENSE) file for the full terms.
+
+The ITR-1 JSON schema in `rulesets/itr1-ay2024-25/` is published by the Income Tax Department,
+Government of India, and is included unchanged for convenience.
