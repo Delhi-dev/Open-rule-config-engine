@@ -1,4 +1,5 @@
 import express from 'express';
+import { spawn } from 'node:child_process';
 import cors from 'cors';
 import { fileCollection } from './storage.js';
 import { nanoid } from 'nanoid';
@@ -366,4 +367,11 @@ if (fs.existsSync(clientDist)) {
 const port = Number(process.env.PORT ?? 4000);
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
+  // SEED_RULESETS=1: on start, load any bundled form (rulesets/*/) that is not there yet. Rule sets that
+  // already exist are left alone, so edits made in the app survive restarts.
+  if (process.env.SEED_RULESETS === '1') {
+    const script = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..', '..', 'rulesets', 'install-all.mjs');
+    const child = spawn(process.execPath, [script, `http://localhost:${port}`, '--only-missing'], { stdio: 'inherit' });
+    child.on('exit', (code) => console.log(`Bundled rule sets ${code === 0 ? 'checked' : `failed to load (exit ${code})`}`));
+  }
 });

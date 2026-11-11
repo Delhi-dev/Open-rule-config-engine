@@ -15,7 +15,8 @@
     "prepare": "npm run build -w @rule-engine/core",
     "test:e2e": "node packages/client/e2e/appendix-e.e2e.mjs",
     "test:api": "node server-tests/t6-api.mjs && node server-tests/api-probes.mjs .",
-    "test:addenda": "for f in addenda-tests/*.check.ts; do npx tsx \"$f\" | tail -1 || exit 1; done"
+    "test:addenda": "for f in addenda-tests/*.check.ts; do npx tsx \"$f\" | tail -1 || exit 1; done",
+    "install:rulesets": "node rulesets/install-all.mjs"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

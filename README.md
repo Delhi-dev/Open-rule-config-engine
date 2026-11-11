@@ -23,6 +23,7 @@ npm install
 npm run build
 npm run dev                                    # server on :4000, app on http://localhost:5173
 node rulesets/itr1-ay2024-25/install.mjs       # in a second terminal: loads the ITR-1 starter set
+npm run install:rulesets                       # optional: loads all seven forms and their rule sets
 ```
 
 Open http://localhost:5173 → **3. Documents** → schema `ITR-1 AY 2024-25 (V1.4)`, rule set `… (starter)` →
@@ -37,10 +38,10 @@ The repository deploys to [Railway](https://railway.com) as one service: `railwa
 packages and starts the server, which serves both the app and the API on Railway's `PORT`.
 
 1. In Railway: **New Project → Deploy from GitHub repo** → choose this repository.
-2. Add a **Volume** to the service, mounted at `/data`, and set the variable `DATA_DIR=/data`.
+2. Add a **Volume** to the service, mounted at `/data`, and set the variables `DATA_DIR=/data` and
+   `SEED_RULESETS=1` (loads all bundled forms on first start).
    Without a volume, schemas, rule sets and documents are lost on every redeploy.
 3. Under **Settings → Networking**, click **Generate Domain** to get a public URL.
-4. Load the ITR-1 starter data from your own machine: `node rulesets/itr1-ay2024-25/install.mjs https://<your-domain>`.
 
 > The app has no login. Anyone with the URL can view, change or delete data, so don't load real
 > taxpayer returns into a public deployment.
@@ -84,8 +85,11 @@ Storage is one JSON file per record under `packages/server/data/` (or `DATA_DIR`
 Only the ITR-1 starter set is covered by the exact-figure tests; the others are checked to import cleanly.
 For ITR-2 to ITR-7 the totals and tax are validated, not computed.
 
-To load a form: upload its schema on **1. Schemas** (use the rule set's `schemaName` as the name), then
-**Import…** its `.ruleset.json` on **2. Rule sets**. Other forms and years are data, not code: write or
+To load every form at once into a running server, run `node rulesets/install-all.mjs [server-url]`. It
+uploads each folder's schema and rule sets, and updates rule sets that already exist; add `--only-missing`
+to leave existing ones alone. Set `SEED_RULESETS=1` on the server to do this automatically on start
+(only missing rule sets are added, so edits made in the app survive restarts). To load one form by hand:
+upload its schema on **1. Schemas**, then **Import…** its `.ruleset.json` on **2. Rule sets**. Other forms and years are data, not code: write or
 import a `.ruleset.json` for any JSON schema.
 
 ## Tests
